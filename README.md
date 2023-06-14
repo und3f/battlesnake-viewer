@@ -4,7 +4,7 @@ Java implementation of Battlesnake Game States viewer.
 
 ## Overview
 
-`battlesnake-viewer` is the command-line tool that displays Battlesnake Game States.
+`battlesnake-viewer` is the command-line tool that renders Battlesnake Game State boards.
 
 It support different output formats:
 
@@ -33,7 +33,7 @@ java -jar target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 ## Examples
 
-## ASCII output
+## ASCII rendering
 
 ```
 #◻###############.#
@@ -59,7 +59,7 @@ java -jar target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar
 #◻###############.#
 ```
 
-## Snek
+## Snek spec rendering
 
 ```
 /v///////////////-/
