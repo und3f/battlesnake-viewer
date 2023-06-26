@@ -1,6 +1,6 @@
 package name.zasenko.battlesnake.coding;
 
-import name.zasenko.battlesnake.Game;
+import name.zasenko.battlesnake.entities.Game;
 
 public class SnakeCodingFactory {
     private final Game game;
@@ -10,12 +10,10 @@ public class SnakeCodingFactory {
     }
 
     public SnakeCoding create(String type) {
-        switch (type) {
-            case "snek":
-                return new SnekSpecCoding(game.you.id);
-            case "ascii":
-                return new ASCIICoding();
-        }
-        throw(new RuntimeException("Unknown coding " + type));
+        return switch (type) {
+            case "snek" -> new SnekSpecCoding(game.you().id());
+            case "ascii" -> new ASCIICoding();
+            default -> throw(new RuntimeException("Unknown coding " + type));
+        };
     }
 }

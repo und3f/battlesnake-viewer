@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import name.zasenko.battlesnake.coding.SnakeCoding;
 import name.zasenko.battlesnake.coding.SnakeCodingFactory;
+import name.zasenko.battlesnake.entities.Game;
 import picocli.CommandLine;
 
 import java.io.BufferedReader;
@@ -20,7 +21,7 @@ public class ConsoleViewer implements Callable<Integer> {
     private File file;
 
     @CommandLine.Option(names = {"-f", "--format"}, description = "Format for displaying the state. Possible values: ascii, snek. Default: ascii")
-    private final String codingName = "ascii";
+    private String codingName = "ascii";
 
     private final static ObjectMapper objectMapper = new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
