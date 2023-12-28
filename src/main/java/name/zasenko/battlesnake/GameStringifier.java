@@ -44,7 +44,9 @@ public class GameStringifier {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < height; y++) {
+
+        // Mirror grid horizontally
+        for (int y = height - 1; y >= 0; y--) {
             sb.append(String.join("", grid[y]));
             sb.append("\n");
         }
