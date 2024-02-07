@@ -18,7 +18,11 @@ public class EngineEventAdapter {
     public Game toGame(EngineEventFrameData frame) {
         List<Point> food = adaptListPoints(frame.food());
         List<Point> hazards = adaptListPoints(frame.hazards());
-        List<Snake> snakes = frame.snakes().stream().filter(s -> s.death() != null).map(EngineEventAdapter::adaptSnake).toList();
+        List<Snake> snakes = frame.snakes().stream()
+                .filter(s -> s.death() == null)
+                .map(EngineEventAdapter::adaptSnake)
+                .toList();
+        assert snakes.size() > 0;
 
         return new Game(
             new Board(
