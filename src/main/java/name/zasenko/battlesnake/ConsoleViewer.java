@@ -6,6 +6,7 @@ import name.zasenko.battlesnake.datasource.DataSourceFactory;
 import name.zasenko.battlesnake.entities.Game;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "battlesnake-viewer",
@@ -31,7 +32,7 @@ public class ConsoleViewer implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() throws IOException {
         Game game = DataSourceFactory.create(uri).readState();
         SnakeCoding coding = new SnakeCodingFactory(game).create(codingName);
         System.out.print(new GameStringifier(coding).stringify(game));

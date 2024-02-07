@@ -8,6 +8,8 @@ import name.zasenko.battlesnake.entities.battlesnake.EngineEvent;
 import name.zasenko.battlesnake.entities.battlesnake.EngineEventFrameData;
 import name.zasenko.battlesnake.entities.battlesnake.EngineGameResponse;
 import name.zasenko.battlesnake.mapper.EngineEventAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,6 +25,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 public class BattleSnakeDataSource implements DataSource {
+    private static final Logger log = LoggerFactory.getLogger(BattleSnakeDataSource.class);
     private static final ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     private static final String battleSnakeGameInfoUrl = "https://engine.battlesnake.com/games/%s";
     private static final String battleSnakeEngineUrl = "wss://engine.battlesnake.com/games/%s/events";
@@ -41,6 +44,8 @@ public class BattleSnakeDataSource implements DataSource {
 
     @Override
     public Game readState() throws IOException {
+        log.info("Loading game {}, frame {}.", gameId, frameId);
+
         HttpClient client = HttpClient.newHttpClient();
 
         EngineGameResponse gameResp = null;
@@ -49,7 +54,7 @@ public class BattleSnakeDataSource implements DataSource {
 
             gameResp = objectMapper.readValue(response, EngineGameResponse.class);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new IOException("Failed to load game from engine.", e);
         }
 
         EngineEventFrameData frame = null;
@@ -57,11 +62,7 @@ public class BattleSnakeDataSource implements DataSource {
         if (frameId == null) {
             frame = gameResp.lastFrame();
         } else {
-            try {
-                getEngineEvent(client, frameId);
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            frame = getEngineEvent(client, frameId).data();
         }
 
 
@@ -72,13 +73,27 @@ public class BattleSnakeDataSource implements DataSource {
     private EngineEvent getEngineEvent(
             HttpClient client,
             int frameId
-    ) throws ExecutionException, InterruptedException {
+    ) throws IOException {
+        log.info("Loading Battlesnake engine events.");
+
         BattleSnakeEventsListener listener = new BattleSnakeEventsListener();
 
         URI engineUri = URI.create(battleSnakeEngineUrl.formatted(gameId));
-        client.newWebSocketBuilder().buildAsync(engineUri, listener).get();
+        try {
+            client.newWebSocketBuilder().buildAsync(engineUri, listener).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IOException("Failed to load game from Battlesnake engine.", e);
+        }
 
         List<EngineEvent> frames = listener.join();
+        log.info("Loaded {} frames.", frames.size());
+
+        EngineEventFrameData frame = frames
+                .stream().filter(f -> f.data().turn() == frameId)
+                .findFirst()
+                .orElseThrow(() -> new IOException("Failed to load frame %d.".formatted(frameId)))
+                .data();
+
         return frames.get(frameId);
     }
 
@@ -96,7 +111,10 @@ public class BattleSnakeDataSource implements DataSource {
             if (last) {
                 try {
                     EngineEvent frame = objectMapper.readValue(sb.toString(), EngineEvent.class);
-                    frames.add(frame);
+                    if (frame.type().equals("frame")) {
+                        frames.add(frame);
+                    }
+
                     sb = new StringBuilder();
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException("Failed to parse engine event.", e);
@@ -118,7 +136,7 @@ public class BattleSnakeDataSource implements DataSource {
 
         @Override
         public void onError(WebSocket ws, Throwable error) {
-            System.out.println("Error occured: " + error);
+            log.error("Websocket error.", error);
         }
 
         @Override

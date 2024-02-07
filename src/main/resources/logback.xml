@@ -1,0 +1,14 @@
+<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%5r %-5p %m%n</pattern>
+        </encoder>
+        <target>System.err</target>
+    </appender>
+
+    <logger name="name.zasenko.battlesnake" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="stdout" />
+    </root>
+</configuration>
