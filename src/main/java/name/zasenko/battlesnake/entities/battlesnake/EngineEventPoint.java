@@ -3,10 +3,10 @@ package name.zasenko.battlesnake.entities.battlesnake;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record EngineEventPoint(
-        @JsonProperty("Y")
+        @JsonProperty("X")
         int x,
 
-        @JsonProperty("X")
+        @JsonProperty("Y")
         int y
 ) {
 }
