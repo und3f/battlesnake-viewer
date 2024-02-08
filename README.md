@@ -23,13 +23,14 @@ run ```mvn package``` to build jar file
 ## Usage
 
 ```
-Usage: battlesnake-viewer [-f=<codingName>] <uri>
+Usage: battlesnake-viewer [-f=<codingName>] [-t=<turn>] <uri|file>
 Display Battlesnake game state.
-      <uri>   Uri of the game state JSON file or Battlesnake game.
-              Example: battlesnake://367d5926-7d06-42be-8af1-2781e0eade93
+      <uri|file>      Uri of the game state JSON file or Battlesnake game.
+                      e.g.: battlesnake://367d5926-7d06-42be-8af1-2781e0eade93
   -f, --format=<codingName>
-              Format for displaying the state. Possible values: ascii, snek.
-                Default: ascii
+                      Format for displaying the state. Possible values: ascii,
+                        snek. Default: ascii
+  -t, --turn=<turn>   Display specific turn. Defaults to the last turn
 ```
 
 Currently three are no launcher script, so you need to substitute `battlesnake-viewer` with next command:
@@ -37,6 +38,12 @@ Currently three are no launcher script, so you need to substitute `battlesnake-v
 ```
 java -jar target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
+
+## Features
+
+- Loading game from battlesnake engine
+- Caching loaded games
+- Different output formats
 
 ## Examples
 

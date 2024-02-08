@@ -12,7 +12,7 @@ public class SnakeCodingFactory {
     public SnakeCoding create(String type) {
         return switch (type) {
             case "snek" -> new SnekSpecCoding(game.you().id());
-            case "ascii" -> new ASCIICoding();
+            case "ascii" -> new AsciiCoding();
             default -> throw(new RuntimeException("Unknown coding " + type));
         };
     }

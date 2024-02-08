@@ -5,8 +5,8 @@ import name.zasenko.battlesnake.entities.Game;
 import java.io.IOException;
 import java.util.List;
 
-public interface DataSource {
+public interface CacheProvider {
 
-    List<Game> readFrames() throws IOException;
+    public List<Game> retrieveFrames() throws IOException;
 
 }

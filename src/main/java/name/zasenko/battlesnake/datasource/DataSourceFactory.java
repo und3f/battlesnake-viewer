@@ -6,13 +6,13 @@ import java.net.URISyntaxException;
 
 public class DataSourceFactory {
 
-    public static DataSource create(String dataSource) {
+    public static CacheProvider create(String dataSource) {
         try {
             URI uri = new URI(dataSource);
             if (uri.getScheme() != null) {
                 switch (uri.getScheme()) {
                     case "battlesnake":
-                        return new HttpsBattleSnakeComDataSource(uri);
+                        return new LocalJsonFilesCacheProvider(new HttpsBattleSnakeComDataSource(uri));
 
                     case "file":
                         System.out.println(uri.getPath());

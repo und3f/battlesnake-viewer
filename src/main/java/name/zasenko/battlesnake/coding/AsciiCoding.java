@@ -1,6 +1,6 @@
 package name.zasenko.battlesnake.coding;
 
-public class ASCIICoding implements SnakeCoding {
+public class AsciiCoding implements SnakeCoding {
     @Override
     public String getEmpty() {
         return ".";

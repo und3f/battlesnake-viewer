@@ -20,7 +20,7 @@ public class ConsoleGamePresentation implements GamePresentation {
 
         System.out.println(boardGrid);
     }
-    private record BoardGrid(String[][] grid) {
+    protected record BoardGrid(String[][] grid) {
 
         @Override
         public String toString() {
@@ -36,7 +36,7 @@ public class ConsoleGamePresentation implements GamePresentation {
 
     }
 
-    private BoardGrid buildBoardGrid(Game game) {
+    protected BoardGrid buildBoardGrid(Game game) {
         var board = game.board();
         int height = board.height();
         int width = board.width();
