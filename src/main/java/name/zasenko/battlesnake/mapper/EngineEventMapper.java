@@ -3,15 +3,18 @@ package name.zasenko.battlesnake.mapper;
 import name.zasenko.battlesnake.entities.Board;
 import name.zasenko.battlesnake.entities.Point;
 import name.zasenko.battlesnake.entities.Snake;
-import name.zasenko.battlesnake.entities.battlesnake.*;
 import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.engine.EngineEventFrameData;
+import name.zasenko.battlesnake.entities.engine.EngineEventPoint;
+import name.zasenko.battlesnake.entities.engine.EngineEventSnake;
+import name.zasenko.battlesnake.entities.engine.EngineGameInfo;
 
 import java.util.List;
 
-public class EngineEventAdapter {
+public class EngineEventMapper {
     private final EngineGameInfo gameInfo;
 
-    public EngineEventAdapter(EngineGameInfo gameInfo) {
+    public EngineEventMapper(EngineGameInfo gameInfo) {
         this.gameInfo = gameInfo;
     }
 
@@ -20,7 +23,7 @@ public class EngineEventAdapter {
         List<Point> hazards = adaptListPoints(frame.hazards());
         List<Snake> snakes = frame.snakes().stream()
                 .filter(s -> s.death() == null)
-                .map(EngineEventAdapter::adaptSnake)
+                .map(EngineEventMapper::adaptSnake)
                 .toList();
         assert snakes.size() > 0;
 

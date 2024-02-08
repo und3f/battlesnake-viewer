@@ -1,4 +1,4 @@
-package name.zasenko.battlesnake;
+package name.zasenko.battlesnake.presentation;
 
 import name.zasenko.battlesnake.coding.SnakeCoding;
 import name.zasenko.battlesnake.entities.Game;
@@ -7,14 +7,36 @@ import name.zasenko.battlesnake.entities.Snake;
 
 import java.util.Arrays;
 
-public class GameStringifier {
+public class ConsoleGamePresentation implements GamePresentation {
     private final SnakeCoding coding;
 
-    public GameStringifier(SnakeCoding coding) {
+    public ConsoleGamePresentation(SnakeCoding coding) {
         this.coding = coding;
     }
 
-    public String stringify(Game game) {
+    @Override
+    public void execute(Game game) {
+        BoardGrid boardGrid = buildBoardGrid(game);
+
+        System.out.println(boardGrid);
+    }
+    private record BoardGrid(String[][] grid) {
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+
+            // Display in reverse order to convert battlesnake coordinates
+            for (int y = grid.length - 1; y >= 0; y--) {
+                sb.append(String.join("", grid()[y]));
+                sb.append("\n");
+            }
+            return sb.toString();
+        }
+
+    }
+
+    private BoardGrid buildBoardGrid(Game game) {
         var board = game.board();
         int height = board.height();
         int width = board.width();
@@ -42,14 +64,7 @@ public class GameStringifier {
             var head = snake.head();
             grid[head.y()][head.x()] = coding.getSnakeHead(snake.id());
         }
-
-        StringBuilder sb = new StringBuilder();
-
-        // Mirror grid horizontally
-        for (int y = height - 1; y >= 0; y--) {
-            sb.append(String.join("", grid[y]));
-            sb.append("\n");
-        }
-        return sb.toString();
+        return new BoardGrid(grid);
     }
+
 }
