@@ -57,7 +57,9 @@ public class ConsoleViewerCmd implements Callable<Integer> {
             return frames.get(frames.size() - 1);
         }
 
-        return frames.get(turn);
+        return frames.stream().filter(game -> game.turn() == turn).findFirst().orElseThrow(
+                () -> new IllegalArgumentException("Turn %d not found.".formatted(turn))
+        );
     }
 
     public GamePresentation createPresentation(SnakeCoding coding) {
