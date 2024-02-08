@@ -1,4 +1,4 @@
-package name.zasenko.battlesnake.entities.battlesnake;
+package name.zasenko.battlesnake.entities.engine;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

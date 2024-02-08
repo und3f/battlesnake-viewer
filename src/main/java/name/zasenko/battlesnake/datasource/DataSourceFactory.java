@@ -12,7 +12,7 @@ public class DataSourceFactory {
             if (uri.getScheme() != null) {
                 switch (uri.getScheme()) {
                     case "battlesnake":
-                        return new BattleSnakeDataSource(uri);
+                        return new HttpsBattleSnakeComDataSource(uri);
 
                     case "file":
                         System.out.println(uri.getPath());
@@ -20,9 +20,9 @@ public class DataSourceFactory {
                 }
             }
         } catch (URISyntaxException e) {
+            // Ignore since we will treat dataSource as filepath
         }
 
-        System.out.println(dataSource);
         return new JsonFileDataSource(new File(dataSource));
     }
 

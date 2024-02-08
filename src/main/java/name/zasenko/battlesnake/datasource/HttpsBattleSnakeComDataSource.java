@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import name.zasenko.battlesnake.entities.Game;
-import name.zasenko.battlesnake.entities.battlesnake.EngineEvent;
-import name.zasenko.battlesnake.entities.battlesnake.EngineEventFrameData;
-import name.zasenko.battlesnake.entities.battlesnake.EngineGameResponse;
-import name.zasenko.battlesnake.mapper.EngineEventAdapter;
+import name.zasenko.battlesnake.entities.engine.EngineEvent;
+import name.zasenko.battlesnake.entities.engine.EngineEventFrameData;
+import name.zasenko.battlesnake.entities.engine.EngineGameResponse;
+import name.zasenko.battlesnake.mapper.EngineEventMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,15 +24,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
-public class BattleSnakeDataSource implements DataSource {
-    private static final Logger log = LoggerFactory.getLogger(BattleSnakeDataSource.class);
+public class HttpsBattleSnakeComDataSource implements DataSource {
+    private static final Logger log = LoggerFactory.getLogger(HttpsBattleSnakeComDataSource.class);
     private static final ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     private static final String battleSnakeGameInfoUrl = "https://engine.battlesnake.com/games/%s";
     private static final String battleSnakeEngineUrl = "wss://engine.battlesnake.com/games/%s/events";
     private final String gameId;
     private final Integer frameId;
 
-    public BattleSnakeDataSource(URI uri) {
+    public HttpsBattleSnakeComDataSource(URI uri) {
         this.gameId = Optional.ofNullable(uri.getHost()).orElseThrow();
         String path = uri.getPath();
         if (path != null && !path.isEmpty()) {
@@ -67,7 +67,7 @@ public class BattleSnakeDataSource implements DataSource {
 
 
         assert frame != null;
-        return new EngineEventAdapter(gameResp.gameInfo()).toGame(frame);
+        return new EngineEventMapper(gameResp.gameInfo()).toGame(frame);
     }
 
     private EngineEvent getEngineEvent(
@@ -86,15 +86,14 @@ public class BattleSnakeDataSource implements DataSource {
         }
 
         List<EngineEvent> frames = listener.join();
-        log.info("Loaded {} frames.", frames.size());
+        log.info("Received frames count: {}.", frames.size());
 
-        EngineEventFrameData frame = frames
+        EngineEvent frame = frames
                 .stream().filter(f -> f.data().turn() == frameId)
                 .findFirst()
-                .orElseThrow(() -> new IOException("Failed to load frame %d.".formatted(frameId)))
-                .data();
+                .orElseThrow(() -> new IOException("Failed to load frame %d.".formatted(frameId)));
 
-        return frames.get(frameId);
+        return frame;
     }
 
     public static class BattleSnakeEventsListener implements WebSocket.Listener {
