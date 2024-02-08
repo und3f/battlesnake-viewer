@@ -25,9 +25,9 @@ public class EngineEventMapper {
                 .filter(s -> s.death() == null)
                 .map(EngineEventMapper::adaptSnake)
                 .toList();
-        assert snakes.size() > 0;
 
         return new Game(
+            frame.turn(),
             new Board(
                 gameInfo.height(),
                 gameInfo.width(),
