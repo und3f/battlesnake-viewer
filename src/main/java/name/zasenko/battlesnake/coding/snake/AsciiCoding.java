@@ -1,9 +1,9 @@
-package name.zasenko.battlesnake.coding;
+package name.zasenko.battlesnake.coding.snake;
 
 public class AsciiCoding implements SnakeCoding {
     @Override
     public String getEmpty() {
-        return ".";
+        return "·";
     }
 
     @Override

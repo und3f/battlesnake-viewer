@@ -1,7 +1,7 @@
 package name.zasenko.battlesnake;
 
-import name.zasenko.battlesnake.coding.SnakeCoding;
-import name.zasenko.battlesnake.coding.SnakeCodingFactory;
+import name.zasenko.battlesnake.coding.snake.SnakeCoding;
+import name.zasenko.battlesnake.coding.snake.SnakeCodingFactory;
 import name.zasenko.battlesnake.datasource.DataSourceFactory;
 import name.zasenko.battlesnake.entities.Game;
 import name.zasenko.battlesnake.presentation.ConsoleGamePresentation;
