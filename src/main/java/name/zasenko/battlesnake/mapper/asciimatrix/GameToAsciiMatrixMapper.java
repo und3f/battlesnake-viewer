@@ -1,6 +1,6 @@
 package name.zasenko.battlesnake.mapper.asciimatrix;
 
-import name.zasenko.battlesnake.coding.SnakeCoding;
+import name.zasenko.battlesnake.coding.snake.SnakeCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
 import name.zasenko.battlesnake.entities.Game;
 import name.zasenko.battlesnake.entities.Point;

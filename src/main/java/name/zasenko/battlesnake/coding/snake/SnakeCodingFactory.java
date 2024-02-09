@@ -1,4 +1,4 @@
-package name.zasenko.battlesnake.coding;
+package name.zasenko.battlesnake.coding.snake;
 
 import name.zasenko.battlesnake.entities.Game;
 

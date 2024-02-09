@@ -1,9 +1,11 @@
 package name.zasenko.battlesnake.presentation;
 
+import name.zasenko.battlesnake.coding.palette.PaletteCodingImpl;
+import name.zasenko.battlesnake.coding.snake.SnakeCoding;
 import name.zasenko.battlesnake.mapper.asciimatrix.GameToAsciiMatrixMapper;
-import name.zasenko.battlesnake.coding.SnakeCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
 import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.mapper.asciimatrix.GameToColorfulAsciiMatrixMapper;
 import name.zasenko.battlesnake.mapper.stringifier.AsciiMatrixStringifier;
 import name.zasenko.battlesnake.mapper.asciimatrix.GridDecorator;
 
@@ -16,7 +18,7 @@ public class ConsoleGamePresentation implements GamePresentation {
 
     @Override
     public void execute(Game game) {
-        AsciiMatrix boardGrid = new GameToAsciiMatrixMapper(coding).buildBoardGrid(game);
+        AsciiMatrix boardGrid = new GameToColorfulAsciiMatrixMapper(coding, new PaletteCodingImpl()).buildBoardGrid(game);
         boardGrid = GridDecorator.execute(boardGrid);
 
         System.out.println();
