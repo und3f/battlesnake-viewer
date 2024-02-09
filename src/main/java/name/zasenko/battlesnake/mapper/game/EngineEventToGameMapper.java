@@ -1,4 +1,4 @@
-package name.zasenko.battlesnake.mapper;
+package name.zasenko.battlesnake.mapper.game;
 
 import name.zasenko.battlesnake.entities.Board;
 import name.zasenko.battlesnake.entities.Point;
@@ -11,19 +11,19 @@ import name.zasenko.battlesnake.entities.engine.EngineGameInfo;
 
 import java.util.List;
 
-public class EngineEventMapper {
+public class EngineEventToGameMapper {
     private final EngineGameInfo gameInfo;
 
-    public EngineEventMapper(EngineGameInfo gameInfo) {
+    public EngineEventToGameMapper(EngineGameInfo gameInfo) {
         this.gameInfo = gameInfo;
     }
 
-    public Game toGame(EngineEventFrameData frame) {
+    public Game buildGame(EngineEventFrameData frame) {
         List<Point> food = adaptListPoints(frame.food());
         List<Point> hazards = adaptListPoints(frame.hazards());
         List<Snake> snakes = frame.snakes().stream()
                 .filter(s -> s.death() == null)
-                .map(EngineEventMapper::adaptSnake)
+                .map(EngineEventToGameMapper::adaptSnake)
                 .toList();
 
         return new Game(
