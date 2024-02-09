@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import name.zasenko.battlesnake.entities.Game;
 import name.zasenko.battlesnake.entities.engine.EngineEvent;
 import name.zasenko.battlesnake.entities.engine.EngineGameResponse;
-import name.zasenko.battlesnake.mapper.EngineEventMapper;
+import name.zasenko.battlesnake.mapper.game.EngineEventToGameMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,8 +63,8 @@ public class HttpsBattleSnakeComDataSource implements DataSource, CachableDataSo
         // Remove last element
         frames.remove(frames.size()-1);
 
-        EngineEventMapper engineEventMapper = new EngineEventMapper(gameResp.gameInfo());
-        return frames.stream().map(f -> engineEventMapper.toGame(f.data())).toList();
+        EngineEventToGameMapper engineEventMapper = new EngineEventToGameMapper(gameResp.gameInfo());
+        return frames.stream().map(f -> engineEventMapper.buildGame(f.data())).toList();
     }
 
     private List<EngineEvent> getEngineEvents(HttpClient client) throws IOException {
