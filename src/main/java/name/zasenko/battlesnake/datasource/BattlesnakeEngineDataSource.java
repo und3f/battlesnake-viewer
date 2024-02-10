@@ -12,29 +12,40 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.WebSocket;
 import java.util.List;
-import java.util.Optional;
 import java.util.Vector;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
-public class HttpsBattleSnakeComDataSource implements DataSource, CachableDataSource {
-    private static final Logger log = LoggerFactory.getLogger(HttpsBattleSnakeComDataSource.class);
+public class BattlesnakeEngineDataSource implements DataSource, CachableDataSource {
+    private static final Logger log = LoggerFactory.getLogger(BattlesnakeEngineDataSource.class);
     private static final ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    private static final String battleSnakeGameInfoUrl = "https://engine.battlesnake.com/games/%s";
-    private static final String battleSnakeEngineUrl = "wss://engine.battlesnake.com/games/%s/events";
-    private final String gameId;
+    private static final String gameInfoEndpointPath = "/games/%s";
+    private static final String eventsEndpointPath = "/games/%s/events";
+    private static final String battlesnakeComEngineUrl = "https://engine.battlesnake.com";
+    public static final String battlesnakePlayHost = "play.battlesnake.com";
 
-    public HttpsBattleSnakeComDataSource(URI uri) {
-        this.gameId = Optional.ofNullable(uri.getHost()).orElseThrow();
-        String path = uri.getPath();
-        if (path != null && !path.isEmpty()) {
-            path = path.substring(1);
+    private final String gameId;
+    private final URI engineUri;
+
+    public BattlesnakeEngineDataSource(URI engineUri, String gameId) {
+        this.engineUri = engineUri;
+        this.gameId = gameId;
+    }
+
+    public BattlesnakeEngineDataSource(String gameId) {
+        this.gameId = gameId;
+
+        try {
+            this.engineUri = new URI(battlesnakeComEngineUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Unexpected error.", e);
         }
     }
 
@@ -44,17 +55,7 @@ public class HttpsBattleSnakeComDataSource implements DataSource, CachableDataSo
 
         HttpClient client = HttpClient.newHttpClient();
 
-        EngineGameResponse gameResp = null;
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(battleSnakeGameInfoUrl.formatted(gameId)))
-                    .build();
-            String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-
-            gameResp = objectMapper.readValue(response, EngineGameResponse.class);
-        } catch (InterruptedException e) {
-            throw new IOException("Failed to load game from engine.", e);
-        }
+        EngineGameResponse gameResp = getEngineGame(client);
 
         List<EngineEvent> frames = getEngineEvents(client);
         if (frames.size() != gameResp.lastFrame().turn() + 1) {
@@ -67,14 +68,29 @@ public class HttpsBattleSnakeComDataSource implements DataSource, CachableDataSo
         return frames.stream().map(f -> engineEventMapper.buildGame(f.data())).toList();
     }
 
+    private EngineGameResponse getEngineGame(HttpClient client) throws IOException {
+        EngineGameResponse gameResp;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(getEngineInfoEndpointUri())
+                    .build();
+            log.info(getEngineInfoEndpointUri().toString());
+            String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+            gameResp = objectMapper.readValue(response, EngineGameResponse.class);
+        } catch (InterruptedException e) {
+            throw new IOException("Failed to load game from engine.", e);
+        }
+        return gameResp;
+    }
+
     private List<EngineEvent> getEngineEvents(HttpClient client) throws IOException {
         log.info("Loading Battlesnake engine events.");
 
         BattleSnakeEventsListener listener = new BattleSnakeEventsListener();
 
-        URI engineUri = URI.create(battleSnakeEngineUrl.formatted(gameId));
         try {
-            client.newWebSocketBuilder().buildAsync(engineUri, listener).get();
+            client.newWebSocketBuilder().buildAsync(getEngineEventsEndpointUri(), listener).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IOException("Failed to load game from Battlesnake engine.", e);
         }
@@ -85,9 +101,42 @@ public class HttpsBattleSnakeComDataSource implements DataSource, CachableDataSo
         return frames;
     }
 
+    private URI getEngineInfoEndpointUri() {
+        try {
+            return new URI(
+                    engineUri.getScheme(),
+                    engineUri.getUserInfo(),
+                    engineUri.getHost(),
+                    engineUri.getPort(),
+                    gameInfoEndpointPath.formatted(gameId),
+                    null,
+                    null
+            );
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Failed to create engine game info endpoint url.", e);
+        }
+    }
+
+    private URI getEngineEventsEndpointUri() {
+        try {
+            return new URI(
+                    engineUri.getScheme().equals("https") ? "wss" : "ws",
+                    engineUri.getUserInfo(),
+                    engineUri.getHost(),
+                    engineUri.getPort(),
+                    eventsEndpointPath.formatted(gameId),
+                    null,
+                    null
+            );
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Failed to construct engine events endpoint uri.", e);
+        }
+    }
+
+
     @Override
     public String cachePrefix() {
-        return "engine.battlesnake.com";
+        return engineUri.getHost();
     }
 
     @Override
