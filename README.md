@@ -20,6 +20,21 @@ Supported output formats:
 
 run ```mvn package``` to build jar file
 
+## Run
+
+After build is done, run the viewer:
+```
+java -jar target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar ${@}
+```
+
+You may add function to your shell's init script (~/.bashrc, ~/.zshrc):
+```
+battlesnake-viewer () {
+  java -jar ~/Downloads/battlesnake-viewer/target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar ${@}
+}
+```
+Reload shell, and you should be able to run viewer with a simple command `battlesnake-viewer`.
+
 ## Usage
 
 ```
