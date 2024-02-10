@@ -25,11 +25,13 @@ run ```mvn package``` to build jar file
 ```
 Usage: battlesnake-viewer [-f=<codingName>] [-t=<turn>] <uri|file>
 Display Battlesnake game state.
-      <uri|file>      Uri of the game state JSON file or Battlesnake game.
-                      e.g.: battlesnake://367d5926-7d06-42be-8af1-2781e0eade93
+      <uri|file>      Uri of the Battlesnake engine game or JSON file.
+                      The JSON file should be in move request format. Examples:
+                        https://play.battlesnake.com/game/d3537a9c-8f1d-41f3-9596-0f4a38e00e29
+                        battlesnake://d3537a9c-8f1d-41f3-9596-0f4a38e00e29 # Alias to previous
+                        path/to/local-file.json
   -f, --format=<codingName>
-                      Format for displaying the state. Possible values: ascii,
-                        snek. Default: ascii
+                      Format for displaying the state. Possible values: ascii, snek. Default: ascii
   -t, --turn=<turn>   Display specific turn. Defaults to the last turn
 ```
 

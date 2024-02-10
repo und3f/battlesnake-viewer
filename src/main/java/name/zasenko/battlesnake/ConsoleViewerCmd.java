@@ -19,8 +19,11 @@ public class ConsoleViewerCmd implements Callable<Integer> {
             index = "0",
             paramLabel = "<uri|file>",
             description = """
-                    Uri of the game state JSON file or Battlesnake game.
-                    e.g.: battlesnake://367d5926-7d06-42be-8af1-2781e0eade93"""
+                    Uri of the Battlesnake engine game or JSON file.
+                    The JSON file should be in move request format. Examples:
+                      https://play.battlesnake.com/game/d3537a9c-8f1d-41f3-9596-0f4a38e00e29
+                      battlesnake://d3537a9c-8f1d-41f3-9596-0f4a38e00e29 # Alias to previous
+                      path/to/local-file.json"""
     )
     private String uri;
 
@@ -39,7 +42,9 @@ public class ConsoleViewerCmd implements Callable<Integer> {
     private Integer turn;
 
     public static void main(String ...args) {
-        System.exit(new CommandLine(new ConsoleViewerCmd()).execute(args));
+        System.exit(new CommandLine(new ConsoleViewerCmd())
+                .setUsageHelpAutoWidth(true)
+                .execute(args));
     }
 
     @Override
