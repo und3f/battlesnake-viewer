@@ -3,11 +3,9 @@ package name.zasenko.battlesnake.mapper.asciimatrix;
 import name.zasenko.battlesnake.coding.palette.PaletteCoding;
 import name.zasenko.battlesnake.coding.snake.SnakeCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
 import name.zasenko.battlesnake.entities.Snake;
-
-import java.util.Arrays;
 
 public class GameToColorfulAsciiMatrixMapper extends GameToAsciiMatrixMapper {
 
@@ -19,13 +17,13 @@ public class GameToColorfulAsciiMatrixMapper extends GameToAsciiMatrixMapper {
     }
 
     @Override
-    public AsciiMatrix buildBoardGrid(Game game) {
-        AsciiMatrix m = super.buildBoardGrid(game);
+    public AsciiMatrix buildBoardGrid(MoveRequest moveRequest) {
+        AsciiMatrix m = super.buildBoardGrid(moveRequest);
         boolean[][] marked = new boolean[m.grid().length][m.grid()[0].length];
 
 
         int snakeInd = 0;
-        for (Snake snake : game.board().snakes()) {
+        for (Snake snake : moveRequest.board().snakes()) {
             for (Point p : snake.body()) {
                 m.grid()[p.y()][p.x()] = palette.snake(m.grid()[p.y()][p.x()], snakeInd);
                 marked[p.y()][p.x()] = true;
@@ -34,7 +32,7 @@ public class GameToColorfulAsciiMatrixMapper extends GameToAsciiMatrixMapper {
             ++snakeInd;
         }
 
-        for (Point p : game.board().food()) {
+        for (Point p : moveRequest.board().food()) {
             m.grid()[p.y()][p.x()] = palette.food(m.grid()[p.y()][p.x()]);
             marked[p.y()][p.x()] = true;
         }

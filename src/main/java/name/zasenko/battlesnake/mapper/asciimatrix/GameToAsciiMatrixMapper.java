@@ -2,7 +2,7 @@ package name.zasenko.battlesnake.mapper.asciimatrix;
 
 import name.zasenko.battlesnake.coding.snake.SnakeCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
 import name.zasenko.battlesnake.entities.Snake;
 
@@ -15,8 +15,8 @@ public class GameToAsciiMatrixMapper {
         this.coding = coding;
     }
 
-    public AsciiMatrix buildBoardGrid(Game game) {
-        var board = game.board();
+    public AsciiMatrix buildBoardGrid(MoveRequest moveRequest) {
+        var board = moveRequest.board();
         int height = board.height();
         int width = board.width();
 
@@ -33,7 +33,7 @@ public class GameToAsciiMatrixMapper {
             grid[p.y()][p.x()] = coding.getHazard(1);
         }
 
-        for (Snake snake : game.board().snakes()) {
+        for (Snake snake : moveRequest.board().snakes()) {
             for (var bit = snake.body().iterator(); bit.hasNext(); ) {
                 var p = bit.next();
                 grid[p.y()][p.x()] = bit.hasNext() ?
