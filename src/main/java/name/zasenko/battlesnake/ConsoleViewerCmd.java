@@ -3,7 +3,7 @@ package name.zasenko.battlesnake;
 import name.zasenko.battlesnake.coding.snake.SnakeCoding;
 import name.zasenko.battlesnake.coding.snake.SnakeCodingFactory;
 import name.zasenko.battlesnake.datasource.DataSourceFactory;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.presentation.ConsoleGamePresentation;
 import name.zasenko.battlesnake.presentation.GamePresentation;
 import picocli.CommandLine;
@@ -49,15 +49,15 @@ public class ConsoleViewerCmd implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        Game game = getFrame();
-        SnakeCoding coding = new SnakeCodingFactory(game).create(codingName);
-        createPresentation(coding).execute(game);
+        MoveRequest moveRequest = getFrame();
+        SnakeCoding coding = new SnakeCodingFactory(moveRequest).create(codingName);
+        createPresentation(coding).execute(moveRequest);
 
         return 0;
     }
 
-    public Game getFrame() throws IOException {
-        List<Game> frames = DataSourceFactory.create(uri).retrieveFrames();
+    public MoveRequest getFrame() throws IOException {
+        List<MoveRequest> frames = DataSourceFactory.create(uri).retrieveFrames();
         if (turn == null) {
             return frames.get(frames.size() - 1);
         }

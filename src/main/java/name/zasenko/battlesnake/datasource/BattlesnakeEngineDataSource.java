@@ -3,7 +3,7 @@ package name.zasenko.battlesnake.datasource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.engine.EngineEvent;
 import name.zasenko.battlesnake.entities.engine.EngineGameResponse;
 import name.zasenko.battlesnake.mapper.game.EngineEventToGameMapper;
@@ -50,7 +50,7 @@ public class BattlesnakeEngineDataSource implements DataSource, CachableDataSour
     }
 
     @Override
-    public List<Game> readFrames() throws IOException {
+    public List<MoveRequest> readFrames() throws IOException {
         log.info("Loading game {}.", gameId);
 
         HttpClient client = HttpClient.newHttpClient();

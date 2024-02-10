@@ -3,7 +3,7 @@ package name.zasenko.battlesnake.datasource;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.utils.WorkingDirectoryManger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +34,12 @@ public class LocalJsonFilesCacheProvider implements CacheProvider {
 
 
     @Override
-    public List<Game> retrieveFrames() throws IOException {
+    public List<MoveRequest> retrieveFrames() throws IOException {
         if (!isCacheAvailable()) {
-            List<Game> game = this.dataSource.readFrames();
-            storeCache(game);
+            List<MoveRequest> moveRequest = this.dataSource.readFrames();
+            storeCache(moveRequest);
 
-            return game;
+            return moveRequest;
         }
 
         return loadCache();
@@ -49,7 +49,7 @@ public class LocalJsonFilesCacheProvider implements CacheProvider {
         return cacheFile.isFile();
     }
 
-    private void storeCache(List<Game> games) throws IOException {
+    private void storeCache(List<MoveRequest> moveRequests) throws IOException {
         log.info("Storing cache file.");
         BufferedWriter writer = new BufferedWriter(new FileWriter(cacheFile));
 
@@ -57,14 +57,14 @@ public class LocalJsonFilesCacheProvider implements CacheProvider {
         jsonFactory.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET,false);
         final ObjectMapper mapper = new ObjectMapper(jsonFactory);
 
-        for (Game game : games) {
-            mapper.writeValue(writer, game);
+        for (MoveRequest moveRequest : moveRequests) {
+            mapper.writeValue(writer, moveRequest);
             writer.write('\n');
         }
         writer.close();
     }
 
-    private List<Game> loadCache() throws IOException {
+    private List<MoveRequest> loadCache() throws IOException {
         log.info("Loading cache file.");
         return new JsonFileDataSource(cacheFile).readFrames();
     }

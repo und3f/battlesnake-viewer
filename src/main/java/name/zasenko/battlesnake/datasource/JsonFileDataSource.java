@@ -3,7 +3,7 @@ package name.zasenko.battlesnake.datasource;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ public class JsonFileDataSource implements DataSource, CacheProvider {
 
     private final static ObjectReader objectReader = new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .reader().forType(Game.class);
+            .reader().forType(MoveRequest.class);
     private final File file;
 
     public JsonFileDataSource(File file) {
@@ -28,21 +28,21 @@ public class JsonFileDataSource implements DataSource, CacheProvider {
 
 
     @Override
-    public List<Game> readFrames() throws IOException {
+    public List<MoveRequest> readFrames() throws IOException {
         log.info("Reading file \"{}\".", file);
 
         String json = Files.readString(file.toPath());
-        List<Game> frames = new ArrayList<>();
+        List<MoveRequest> frames = new ArrayList<>();
         var it = objectReader.readValues(json);
         while (it.hasNext()) {
-            frames.add((Game) it.nextValue());
+            frames.add((MoveRequest) it.nextValue());
         }
 
         return frames;
     }
 
     @Override
-    public List<Game> retrieveFrames() throws IOException {
+    public List<MoveRequest> retrieveFrames() throws IOException {
         return readFrames();
     }
 

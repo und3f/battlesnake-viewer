@@ -1,12 +1,12 @@
 package name.zasenko.battlesnake.datasource;
 
-import name.zasenko.battlesnake.entities.Game;
+import name.zasenko.battlesnake.entities.MoveRequest;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface DataSource {
 
-    List<Game> readFrames() throws IOException;
+    List<MoveRequest> readFrames() throws IOException;
 
 }

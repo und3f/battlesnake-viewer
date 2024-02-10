@@ -1,6 +1,7 @@
 package name.zasenko.battlesnake.entities;
 
-public record Game(
+public record MoveRequest(
+        // TODO: add "game"
         int turn,
         Board board,
         Snake you

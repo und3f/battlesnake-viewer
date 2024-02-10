@@ -1,9 +1,9 @@
 package name.zasenko.battlesnake.mapper.game;
 
 import name.zasenko.battlesnake.entities.Board;
+import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
 import name.zasenko.battlesnake.entities.Snake;
-import name.zasenko.battlesnake.entities.Game;
 import name.zasenko.battlesnake.entities.engine.EngineEventFrameData;
 import name.zasenko.battlesnake.entities.engine.EngineEventPoint;
 import name.zasenko.battlesnake.entities.engine.EngineEventSnake;
@@ -18,7 +18,7 @@ public class EngineEventToGameMapper {
         this.gameInfo = gameInfo;
     }
 
-    public Game buildGame(EngineEventFrameData frame) {
+    public MoveRequest buildGame(EngineEventFrameData frame) {
         List<Point> food = adaptListPoints(frame.food());
         List<Point> hazards = adaptListPoints(frame.hazards());
         List<Snake> snakes = frame.snakes().stream()
@@ -26,7 +26,7 @@ public class EngineEventToGameMapper {
                 .map(EngineEventToGameMapper::adaptSnake)
                 .toList();
 
-        return new Game(
+        return new MoveRequest(
             frame.turn(),
             new Board(
                 gameInfo.height(),
