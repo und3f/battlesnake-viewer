@@ -1,17 +1,20 @@
 package name.zasenko.battlesnake.coding.palette;
 
-import name.zasenko.battlesnake.utils.AnsiColorConstants;
-import static name.zasenko.battlesnake.utils.AnsiColorConstants.wrap;
+import static name.zasenko.battlesnake.utils.Ansi.*;
 
 public class PaletteCodingImpl implements PaletteCoding {
 
-    final static String Bg = AnsiColorConstants.WHITE;
-    final static String Food = AnsiColorConstants.PURPLE_BOLD;
+    final static String Bg = "";
+
+    final static String Empty = Bg + foregroundTrueColor(0xf1, 0xf1, 0xf1);;
+
+    final static String Food = Bg + foregroundTrueColor(0xf4, 0x3f, 0x5e);
+
     final static String[] Snakes = {
-            AnsiColorConstants.CYAN,
-            AnsiColorConstants.GREEN,
-            AnsiColorConstants.RED,
-            AnsiColorConstants.YELLOW
+            foregroundTrueColor(148, 0, 211),
+            foregroundTrueColor(0, 255, 0),
+            foregroundTrueColor(255, 0, 85),
+            foregroundTrueColor(255, 229, 143)
     };
 
     @Override
@@ -31,7 +34,7 @@ public class PaletteCodingImpl implements PaletteCoding {
 
     @Override
     public String snake(String cell, int snakeIndex) {
-        return wrap(cell, Snakes[snakeIndex]);
+        return wrap(cell, Bg + Snakes[snakeIndex]);
     }
 
 }
