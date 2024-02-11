@@ -1,6 +1,6 @@
-package name.zasenko.battlesnake.coding.snake;
+package name.zasenko.battlesnake.coding.board;
 
-public class AsciiCoding implements SnakeCoding {
+public class AsciiBoardCoding implements BoardCoding {
     @Override
     public String getEmpty() {
         return "·";

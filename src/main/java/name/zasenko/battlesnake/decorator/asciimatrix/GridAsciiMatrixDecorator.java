@@ -1,10 +1,10 @@
-package name.zasenko.battlesnake.mapper.asciimatrix;
+package name.zasenko.battlesnake.decorator.asciimatrix;
 
 import name.zasenko.battlesnake.entities.AsciiMatrix;
 
 import java.util.Arrays;
 
-public class GridDecorator {
+public class GridAsciiMatrixDecorator {
     public static int LabelWidthX = 1;
     public static int LabelWidthY = 1;
     public static int RullerPaddingX = 1;

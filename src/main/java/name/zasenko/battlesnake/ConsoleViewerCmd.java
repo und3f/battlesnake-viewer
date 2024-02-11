@@ -1,7 +1,7 @@
 package name.zasenko.battlesnake;
 
-import name.zasenko.battlesnake.coding.snake.SnakeCoding;
-import name.zasenko.battlesnake.coding.snake.SnakeCodingFactory;
+import name.zasenko.battlesnake.coding.board.BoardCoding;
+import name.zasenko.battlesnake.coding.board.BoardCodingFactory;
 import name.zasenko.battlesnake.datasource.DataSourceFactory;
 import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.presentation.ConsoleGamePresentation;
@@ -57,7 +57,7 @@ public class ConsoleViewerCmd implements Callable<Integer> {
     @Override
     public Integer call() throws IOException {
         MoveRequest moveRequest = getFrame();
-        SnakeCoding coding = new SnakeCodingFactory(moveRequest).create(codingName);
+        BoardCoding coding = new BoardCodingFactory(moveRequest).create(codingName);
         createPresentation(coding).execute(moveRequest);
 
         return 0;
@@ -74,7 +74,7 @@ public class ConsoleViewerCmd implements Callable<Integer> {
         );
     }
 
-    public GamePresentation createPresentation(SnakeCoding coding) {
+    public GamePresentation createPresentation(BoardCoding coding) {
         return new ConsoleGamePresentation(coding, colorEnabled);
     }
 

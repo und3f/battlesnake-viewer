@@ -13,5 +13,4 @@ public record Snake(String id,
 
                     // TODO: add "latency"
 ) {
-
 }
