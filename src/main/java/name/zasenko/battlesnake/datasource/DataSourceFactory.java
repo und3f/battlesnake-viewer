@@ -18,24 +18,21 @@ public class DataSourceFactory {
             URI uri = new URI(dataSource);
             if (uri.getScheme() != null) {
                 switch (uri.getScheme()) {
-                    case "battlesnake":
+                    case "battlesnake" -> {
                         return new LocalJsonFilesCacheProvider(new BattlesnakeEngineDataSource(parseBattlesnakeUriGameId(uri)));
-
-                    case "https":
-                    case "http":
+                    }
+                    case "https", "http" -> {
                         String gameId = parseBattlesnakeEngineGameId(uri);
                         if (uri.getHost().equals(BattlesnakeEngineDataSource.battlesnakePlayHost)) {
                             return new LocalJsonFilesCacheProvider(new BattlesnakeEngineDataSource(gameId));
                         }
-
                         URI engineUri = parseBattlesnakeEngineUri(uri);
                         return new LocalJsonFilesCacheProvider(new BattlesnakeEngineDataSource(engineUri, gameId));
-
-                    case "file":
+                    }
+                    case "file" -> {
                         return new JsonFileDataSource(new File(uri.getPath()));
-
-                    default:
-                        throw new IllegalArgumentException("Usupported schema: %s".formatted(uri.getScheme()));
+                    }
+                    default -> throw new IllegalArgumentException("Usupported schema: %s".formatted(uri.getScheme()));
                 }
             }
         } catch (URISyntaxException e) {

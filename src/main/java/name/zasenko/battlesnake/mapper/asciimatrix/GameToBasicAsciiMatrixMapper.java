@@ -1,6 +1,6 @@
 package name.zasenko.battlesnake.mapper.asciimatrix;
 
-import name.zasenko.battlesnake.coding.snake.SnakeCoding;
+import name.zasenko.battlesnake.coding.board.BoardCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
 import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
@@ -9,9 +9,9 @@ import name.zasenko.battlesnake.entities.Snake;
 import java.util.Arrays;
 
 public class GameToBasicAsciiMatrixMapper implements GameToAsciiMatrixMapper {
-    private final SnakeCoding coding;
+    private final BoardCoding coding;
 
-    public GameToBasicAsciiMatrixMapper(SnakeCoding coding) {
+    public GameToBasicAsciiMatrixMapper(BoardCoding coding) {
         this.coding = coding;
     }
 

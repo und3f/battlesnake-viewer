@@ -1,9 +1,9 @@
-package name.zasenko.battlesnake.coding.snake;
+package name.zasenko.battlesnake.coding.board;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SnekSpecCoding implements SnakeCoding {
+public class SnekSpecBoardCoding implements BoardCoding {
     private char nextSnakeChar = 's';
     private final Map<String, SnakeCharCodes> snakes = new HashMap<>();
 
@@ -12,7 +12,7 @@ public class SnekSpecCoding implements SnakeCoding {
         String body;
     }
 
-    public SnekSpecCoding(String me) {
+    public SnekSpecBoardCoding(String me) {
         getOrInitSnakeCharCoding(me);
     }
 

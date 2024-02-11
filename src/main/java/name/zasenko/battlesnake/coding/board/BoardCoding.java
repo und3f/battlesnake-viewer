@@ -1,6 +1,6 @@
-package name.zasenko.battlesnake.coding.snake;
+package name.zasenko.battlesnake.coding.board;
 
-public interface SnakeCoding {
+public interface BoardCoding {
     String getEmpty();
     String getHazard(int stack);
     String getFood();

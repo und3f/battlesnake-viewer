@@ -1,7 +1,7 @@
 package name.zasenko.battlesnake.mapper.asciimatrix;
 
 import name.zasenko.battlesnake.coding.palette.PaletteCoding;
-import name.zasenko.battlesnake.coding.snake.SnakeCoding;
+import name.zasenko.battlesnake.coding.board.BoardCoding;
 import name.zasenko.battlesnake.entities.AsciiMatrix;
 import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
@@ -11,7 +11,7 @@ public class GameToColorfulAsciiMatrixMapper extends GameToBasicAsciiMatrixMappe
 
     private final PaletteCoding palette;
 
-    public GameToColorfulAsciiMatrixMapper(SnakeCoding coding, PaletteCoding palette) {
+    public GameToColorfulAsciiMatrixMapper(BoardCoding coding, PaletteCoding palette) {
         super(coding);
         this.palette = palette;
     }
