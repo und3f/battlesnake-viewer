@@ -4,17 +4,31 @@ Java implementation of Battlesnake Game States viewer.
 
 ## Overview
 
-`battlesnake-viewer` is the command-line tool that renders Battlesnake Game State boards.
+`battlesnake-viewer` is the command-line tool that renders Battlesnake Game State states.
 
-Supported games sources:
-* File in Battle Snake JSON move request format
-* Loading game from BattleSnake engine
+#### Features
 
-Supported output formats:
+- view game frame from battlesnake.com engine
+- view saved moveRequest
+- CLI
 
-* `ascii` -- human readable format
-* `snek` -- implementation of the snek spec, which is a plain text mock format that is mostly used for tests,
-  see https://github.com/mike-anderson/snek-spec
+#### Supported games' data sources:
+* file in Battle Snake JSON move request format
+* battlesnake.com engine
+* locale cache
+
+#### Supported output formats
+
+* `ascii`
+  * uses utf8 squares to render game state
+* `snek` 
+  * based on Snek-Spec by Echosec. Plain text game representation that could be used for snake unit tests.
+
+> A snake always begins and ends with capital letter, with the middle segments represented by lower case letters . By
+> default Snek-Spec assumes your snake is the snake starting with S (for snake) and ending in T (for tail).
+>
+Thus `SttT` represents a snake with a length of 4 that is moving to the left.
+Details https://github.com/mike-anderson/snek-spec.
 
 ## Build
 
@@ -50,13 +64,6 @@ Display Battlesnake game state.
                       Format for displaying the state. Possible values: ascii, snek. Default: ascii
   -t, --turn=<turn>   Display specific turn. Defaults to the last turn
 ```
-
-## Features
-
-- Loading game from battlesnake engine
-- Caching loaded games
-- Colors
-- Different output formats
 
 ## Examples
 
