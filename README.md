@@ -28,7 +28,7 @@ Java implementation of Battlesnake Game States viewer.
 > default Snek-Spec assumes your snake is the snake starting with S (for snake) and ending in T (for tail).
 >
 Thus `SttT` represents a snake with a length of 4 that is moving to the left.
-Details https://github.com/mike-anderson/snek-spec.
+Details [https://github.com/mike-anderson/snek-spec](https://github.com/mike-anderson/snek-spec?tab=readme-ov-file#snek-spec).
 
 ## Build
 
