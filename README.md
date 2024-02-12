@@ -51,12 +51,6 @@ Display Battlesnake game state.
   -t, --turn=<turn>   Display specific turn. Defaults to the last turn
 ```
 
-Currently three are no launcher script, so you need to substitute `battlesnake-viewer` with next command:
-
-```
-java -jar target/battlesnake-viewer-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
-
 ## Features
 
 - Loading game from battlesnake engine
