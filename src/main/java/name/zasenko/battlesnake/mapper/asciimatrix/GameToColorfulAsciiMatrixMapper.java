@@ -7,7 +7,7 @@ import name.zasenko.battlesnake.entities.MoveRequest;
 import name.zasenko.battlesnake.entities.Point;
 import name.zasenko.battlesnake.entities.Snake;
 
-public class GameToColorfulAsciiMatrixMapper extends GameToAsciiMatrixMapper {
+public class GameToColorfulAsciiMatrixMapper extends GameToBasicAsciiMatrixMapper implements GameToAsciiMatrixMapper {
 
     private final PaletteCoding palette;
 

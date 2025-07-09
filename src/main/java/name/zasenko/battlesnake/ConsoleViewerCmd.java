@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "battlesnake-viewer",
-    description = "Display Battlesnake game state.")
+        description = "Display Battlesnake game state.")
 public class ConsoleViewerCmd implements Callable<Integer> {
     @CommandLine.Parameters(
             index = "0",
@@ -41,7 +41,14 @@ public class ConsoleViewerCmd implements Callable<Integer> {
     )
     private Integer turn;
 
-    public static void main(String ...args) {
+    @CommandLine.Option(
+            names = {"--color"},
+            description = """
+                    Enable colors. Default true"""
+    )
+    private Boolean colorEnabled = true;
+
+    public static void main(String... args) {
         System.exit(new CommandLine(new ConsoleViewerCmd())
                 .setUsageHelpAutoWidth(true)
                 .execute(args));
@@ -68,7 +75,7 @@ public class ConsoleViewerCmd implements Callable<Integer> {
     }
 
     public GamePresentation createPresentation(SnakeCoding coding) {
-        return new ConsoleGamePresentation(coding);
+        return new ConsoleGamePresentation(coding, colorEnabled);
     }
 
 }

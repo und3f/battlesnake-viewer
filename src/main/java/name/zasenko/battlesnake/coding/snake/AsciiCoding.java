@@ -18,16 +18,16 @@ public class AsciiCoding implements SnakeCoding {
 
     @Override
     public String getSnakeHead(String id) {
-        return "◼";
+        return "◙";
     }
 
     @Override
     public String getSnakeBody(String id) {
-        return "◻";
+        return "◼";
     }
 
     @Override
     public String getSnakeTail(String id) {
-        return "◻";
+        return "▪";
     }
 }
